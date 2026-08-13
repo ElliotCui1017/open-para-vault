@@ -2,10 +2,14 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$Destination,
 
-    [string]$SourceRoot = (Resolve-Path "$PSScriptRoot\..").Path
+    [string]$SourceRoot = ""
 )
 
 $ErrorActionPreference = "Stop"
+
+if ([string]::IsNullOrWhiteSpace($SourceRoot)) {
+    $SourceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+}
 
 $source = [System.IO.Path]::GetFullPath($SourceRoot)
 $destinationPath = [System.IO.Path]::GetFullPath($Destination)
@@ -47,7 +51,16 @@ $allowlist = @(
 foreach ($relativePath in $allowlist) {
     $item = Join-Path $source $relativePath
     if (Test-Path -LiteralPath $item) {
-        Copy-Item -LiteralPath $item -Destination $destinationPath -Recurse -Force
+        $target = Join-Path $destinationPath $relativePath
+        $sourceItem = Get-Item -LiteralPath $item -Force
+        if ($sourceItem.PSIsContainer) {
+            New-Item -ItemType Directory -Path $target -Force | Out-Null
+            Get-ChildItem -LiteralPath $item -Force | ForEach-Object {
+                Copy-Item -LiteralPath $_.FullName -Destination $target -Recurse -Force
+            }
+        } else {
+            Copy-Item -LiteralPath $item -Destination $target -Force
+        }
     }
 }
 
