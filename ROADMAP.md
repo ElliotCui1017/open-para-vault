@@ -1,30 +1,38 @@
 # Roadmap
 
-## v0.1.0: privacy-first public preview
+Open PARA Vault is evolving from a single starter system into privacy-safe tooling for publishing reusable Obsidian knowledge systems. PARA remains the reference implementation, not the only long-term use case.
 
-- [x] establish a clean public history and migration audit;
-- [x] document architecture, setup, privacy, workflow, and metadata;
-- [x] provide portable templates and a fictional demo vault;
-- [x] provide generic Dataview and QuickAdd examples;
-- [x] add local preflight, structural validation, and CI;
-- [x] complete maintainer review of the public history;
-- [x] establish and validate the public GitHub repository;
-- [ ] tag `v0.1.0` and publish the GitHub Release after explicit maintainer approval.
+## Completed
 
-## v0.2.0: compatibility and onboarding
+- [x] privacy-first public repository and clean Git history;
+- [x] metadata and maintainer-identity privacy guards;
+- [x] deterministic rendered-template validation;
+- [x] cross-platform bootstrap behavior and source-boundary testing;
+- [x] frozen `v0.1.0` public preview.
 
-- test QuickAdd configuration against supported plugin releases;
-- add a packaged starter-vault artifact generated from source;
-- validate more frontmatter semantics without adding a heavy runtime;
-- add Windows and macOS CI coverage for bootstrap behavior;
-- improve onboarding for users who do not use Git.
+## Current: v0.2.0
 
-## v0.3.0: extensibility
+- [x] deterministic downloadable starter-vault builder;
+- [x] explicit safe Obsidian configuration allowlist;
+- [x] package safety, extraction, and reproducibility tests;
+- [x] guarded Draft Release asset workflow;
+- [ ] maintainer review and publish of the `v0.2.0` release.
 
-- document safe customization overlays for private vaults;
-- add optional provider-neutral automation interfaces;
-- expand dashboard and review recipes;
-- publish a compatibility policy for Obsidian and optional plugins.
+## Next: generic privacy and public-release checker
+
+The next major tooling direction is a reusable checker with an interface such as:
+
+```bash
+python scripts/check_vault.py /path/to/vault
+```
+
+This checker is planned, not implemented. Likely follow-up work includes configurable exclusions, a reusable CLI, a GitHub Action, and external integrations.
+
+## Lower-priority reference implementation work
+
+- compatibility feedback for optional Obsidian plugins;
+- safe customization overlays for private vaults;
+- additional dashboard and review recipes.
 
 ## Non-goals
 

@@ -27,7 +27,10 @@ python scripts/validate_repo.py .
 python scripts/validate_templates.py .
 python -m unittest discover -s tests -v
 pwsh -File ./tests/test_bootstrap_public_repo.ps1
+python scripts/build_starter_vault.py --version v0.0.0-local --output dist
 ```
+
+Delete local `dist/` output after inspection. Generated ZIP and checksum files are never committed.
 
 5. Review the entire diff and new Git history for private data.
 6. Open a pull request using the template.

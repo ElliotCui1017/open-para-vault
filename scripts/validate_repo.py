@@ -17,6 +17,7 @@ REQUIRED_FILES = {
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/pull_request_template.md",
     ".github/workflows/public-preflight.yml",
+    ".github/workflows/release.yml",
     ".gitignore",
     "AGENTS.md",
     "CHANGELOG.md",
@@ -26,6 +27,7 @@ REQUIRED_FILES = {
     "MIGRATION_AUDIT.md",
     "README.md",
     "RELEASE_NOTES_v0.1.0.md",
+    "RELEASE_NOTES_v0.2.0.md",
     "ROADMAP.md",
     "SECURITY.md",
     "config/quickadd.example.json",
@@ -39,9 +41,11 @@ REQUIRED_FILES = {
     "docs/setup.md",
     "docs/workflow.md",
     "scripts/preflight_public.py",
+    "scripts/build_starter_vault.py",
     "scripts/validate_templates.py",
     "scripts/validate_repo.py",
     "tests/test_validate_templates.py",
+    "tests/test_build_starter_vault.py",
 }
 
 DEMO_FOLDERS = {

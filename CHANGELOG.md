@@ -10,12 +10,21 @@ All notable changes are documented here. The format follows Keep a Changelog, an
 - Windows, macOS, and Linux CI coverage for rendered-template validation;
 - Windows and Linux CI coverage for bootstrap success and safety boundaries;
 - a stable required CI gate for branch protection;
-- complete bootstrap allowlisting for repository validation and tests, with generated caches excluded.
+- complete bootstrap allowlisting for repository validation and tests, with generated caches excluded;
+- deterministic downloadable starter-vault ZIP and SHA-256 checksum generation;
+- strict package allowlisting for safe Obsidian configuration;
+- package extraction, safety, and reproducibility validation;
+- tag-triggered Draft Release asset automation with minimal write permissions.
+
+### Changed
+
+- positioned PARA as the reference implementation within broader privacy-safe Obsidian publishing tooling;
+- added a no-Git onboarding path for release downloads.
 
 ### Planned
 
-- compatibility feedback from the first public preview;
-- maintainer-selected improvements tracked in GitHub Issues.
+- generic privacy/public-release checker and reusable CLI;
+- configurable exclusions and a future GitHub Action.
 
 ## [0.1.0] - 2026-08-14
 

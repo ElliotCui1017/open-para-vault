@@ -54,7 +54,7 @@ jobs:
         run: python scripts/validate_templates.py .
 
       - name: Run rendered-template tests
-        run: python -m unittest discover -s tests -v
+        run: python -m unittest discover -s tests -p "test_validate_templates.py" -v
 
   bootstrap:
     name: Bootstrap (${{ matrix.os }})
@@ -78,6 +78,38 @@ jobs:
         shell: pwsh
         run: ./tests/test_bootstrap_public_repo.ps1
 
+  packaging:
+    name: packaging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Test starter-vault packaging
+        run: python -m unittest discover -s tests -p "test_build_starter_vault.py" -v
+
+      - name: Build reproducible CI packages
+        env:
+          FIRST_OUTPUT: ${{ runner.temp }}/starter-package-first
+          SECOND_OUTPUT: ${{ runner.temp }}/starter-package-second
+        run: |
+          python scripts/build_starter_vault.py --version v0.0.0-ci --output "$FIRST_OUTPUT"
+          python scripts/build_starter_vault.py --version v0.0.0-ci --output "$SECOND_OUTPUT"
+          cmp "$FIRST_OUTPUT/open-para-vault-v0.0.0-ci.zip" "$SECOND_OUTPUT/open-para-vault-v0.0.0-ci.zip"
+          cmp "$FIRST_OUTPUT/open-para-vault-v0.0.0-ci.zip.sha256" "$SECOND_OUTPUT/open-para-vault-v0.0.0-ci.zip.sha256"
+
+      - name: Clean package output
+        if: ${{ always() }}
+        env:
+          FIRST_OUTPUT: ${{ runner.temp }}/starter-package-first
+          SECOND_OUTPUT: ${{ runner.temp }}/starter-package-second
+        run: rm -rf "$FIRST_OUTPUT" "$SECOND_OUTPUT"
+
   required:
     name: required
     if: ${{ always() }}
@@ -85,6 +117,7 @@ jobs:
       - validate
       - rendered-templates
       - bootstrap
+      - packaging
     runs-on: ubuntu-latest
     steps:
       - name: Require every validation job
@@ -92,7 +125,9 @@ jobs:
           VALIDATE_RESULT: ${{ needs.validate.result }}
           RENDERED_TEMPLATES_RESULT: ${{ needs.rendered-templates.result }}
           BOOTSTRAP_RESULT: ${{ needs.bootstrap.result }}
+          PACKAGING_RESULT: ${{ needs.packaging.result }}
         run: |
           test "$VALIDATE_RESULT" = "success"
           test "$RENDERED_TEMPLATES_RESULT" = "success"
           test "$BOOTSTRAP_RESULT" = "success"
+          test "$PACKAGING_RESULT" = "success"

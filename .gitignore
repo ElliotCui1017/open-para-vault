@@ -72,6 +72,8 @@ node_modules/
 *.temp
 *.bak
 *.log
+*.sha256
+*.zip
 dist/
 build/
 coverage/

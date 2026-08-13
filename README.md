@@ -1,6 +1,8 @@
 # Open PARA Vault
 
-A privacy-first, local-first starter system for Obsidian. It combines a PARA-inspired folder structure, reusable templates, consistent metadata, optional Dataview and QuickAdd workflows, publication checks, and Git-friendly defaults.
+Open PARA Vault is a privacy-safe toolkit and starter framework for publishing reusable Obsidian knowledge systems without exposing a private vault.
+
+It combines privacy-safe public extraction, Git-history isolation, public-release validation, deterministic packaging, cross-platform bootstrap, and metadata/template validation with a ready-to-use PARA starter vault as the reference implementation.
 
 The repository is the reusable **system layer**. Your real notes remain in a separate private vault.
 
@@ -15,7 +17,19 @@ The repository is the reusable **system layer**. Your real notes remain in a sep
 - privacy preflight, structural validation, and CI;
 - migration and contributor guidance.
 
-## Quick start
+## Quick start — no Git required
+
+For v0.2.0 and later:
+
+1. Go to [Releases](https://github.com/ElliotCui1017/open-para-vault/releases).
+2. Download `open-para-vault-v0.2.0.zip` and its optional `.sha256` checksum.
+3. Extract the ZIP.
+4. In Obsidian, choose **Open folder as vault**.
+5. Select the extracted `open-para-vault-v0.2.0` folder.
+
+The archive contains only the fictional starter vault, not this development repository or its Git history.
+
+## Developer and Git-based setup
 
 ### Explore the demo
 
@@ -50,7 +64,8 @@ Never copy your private vault into this repository to "try the system."
 |-- tests/                   standard-library validation tests
 |-- templates/               portable note templates
 |-- MIGRATION_AUDIT.md       source migration risk record
-`-- RELEASE_NOTES_v0.1.0.md  first-release notes
+|-- RELEASE_NOTES_v0.1.0.md  frozen first-release notes
+`-- RELEASE_NOTES_v0.2.0.md  next-release notes
 ```
 
 ## Core workflow
@@ -79,6 +94,7 @@ python scripts/preflight_public.py .
 python scripts/validate_repo.py .
 python scripts/validate_templates.py .
 python -m unittest discover -s tests -v
+python scripts/build_starter_vault.py --version v0.0.0-local --output dist
 ```
 
 The checks reduce risk; they do not replace human review of the full Git history.
@@ -89,7 +105,7 @@ The public tree is built from an allowlist and has a new Git history. The mainta
 
 ## Project status
 
-The public repository and CI are established, and the tree is prepared for the `v0.1.0` preview. The release tag and GitHub Release remain pending explicit maintainer approval. See [release notes](RELEASE_NOTES_v0.1.0.md) and [roadmap](ROADMAP.md).
+The `v0.1.0` public preview is frozen. Development toward `v0.2.0` adds a reproducible downloadable starter vault and guarded release-asset pipeline. See [v0.2.0 release notes](RELEASE_NOTES_v0.2.0.md) and the [roadmap](ROADMAP.md).
 
 ## Contributing and security
 

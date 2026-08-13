@@ -48,6 +48,7 @@ $allowlist = @(
     "MIGRATION_AUDIT.md",
     "README.md",
     "RELEASE_NOTES_v0.1.0.md",
+    "RELEASE_NOTES_v0.2.0.md",
     "ROADMAP.md",
     "SECURITY.md",
     "codex",
