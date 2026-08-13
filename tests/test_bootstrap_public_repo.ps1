@@ -11,7 +11,7 @@ if ([string]::IsNullOrWhiteSpace($SourceRoot)) {
 
 $source = [System.IO.Path]::GetFullPath($SourceRoot)
 $bootstrap = Join-Path $source "scripts/bootstrap_public_repo.ps1"
-$python = Get-Command python -CommandType Application -ErrorAction Stop
+$python = @(Get-Command python -CommandType Application -ErrorAction Stop)[0]
 $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("open-para-bootstrap-" + [guid]::NewGuid())
 $insideSource = Join-Path $source (".bootstrap-test-" + [guid]::NewGuid())
 
