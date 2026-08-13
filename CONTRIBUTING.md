@@ -26,6 +26,7 @@ python scripts/preflight_public.py .
 python scripts/validate_repo.py .
 python scripts/validate_templates.py .
 python -m unittest discover -s tests -v
+pwsh -File ./tests/test_bootstrap_public_repo.ps1
 ```
 
 5. Review the entire diff and new Git history for private data.

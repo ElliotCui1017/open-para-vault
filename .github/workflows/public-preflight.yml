@@ -55,3 +55,44 @@ jobs:
 
       - name: Run rendered-template tests
         run: python -m unittest discover -s tests -v
+
+  bootstrap:
+    name: Bootstrap (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.x"
+
+      - name: Test bootstrap behavior
+        shell: pwsh
+        run: ./tests/test_bootstrap_public_repo.ps1
+
+  required:
+    name: required
+    if: ${{ always() }}
+    needs:
+      - validate
+      - rendered-templates
+      - bootstrap
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every validation job
+        env:
+          VALIDATE_RESULT: ${{ needs.validate.result }}
+          RENDERED_TEMPLATES_RESULT: ${{ needs.rendered-templates.result }}
+          BOOTSTRAP_RESULT: ${{ needs.bootstrap.result }}
+        run: |
+          test "$VALIDATE_RESULT" = "success"
+          test "$RENDERED_TEMPLATES_RESULT" = "success"
+          test "$BOOTSTRAP_RESULT" = "success"

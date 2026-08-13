@@ -7,7 +7,10 @@ All notable changes are documented here. The format follows Keep a Changelog, an
 ### Added
 
 - deterministic rendering and generated-frontmatter validation for every reusable template;
-- Windows, macOS, and Linux CI coverage for rendered-template validation.
+- Windows, macOS, and Linux CI coverage for rendered-template validation;
+- Windows and Linux CI coverage for bootstrap success and safety boundaries;
+- a stable required CI gate for branch protection;
+- complete bootstrap allowlisting for repository validation and tests, with generated caches excluded.
 
 ### Planned
 
