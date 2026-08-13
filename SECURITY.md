@@ -21,7 +21,10 @@ Never commit:
 - `.env` files;
 - exported browser profiles;
 - personal vault contents;
+- personal email addresses in maintainer Git author or committer metadata;
 - real identity, health, finance, employment, academic, or contact records.
+
+Maintainers should configure a repository-local GitHub noreply address. Public preflight enforces the expected maintainer identity in reachable Git history.
 
 ## Accidental secret publication
 

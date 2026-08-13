@@ -13,6 +13,7 @@ Open PARA Vault is a privacy-first Obsidian starter system that separates reusab
 - portable QuickAdd and Templater examples;
 - safe Obsidian core settings without plugin binaries or workspace state;
 - bootstrap, privacy preflight, structural validation, and CI;
+- a commit-metadata guard for the maintainer's public noreply identity;
 - complete architecture, setup, workflow, privacy, and contribution documentation.
 
 ## Installation

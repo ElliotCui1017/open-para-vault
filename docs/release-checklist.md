@@ -6,9 +6,10 @@
 - [x] Maintainer private notes, attachments, credentials, and local state are excluded.
 - [x] No personal absolute paths remain in the public tree.
 - [x] Demo content is fictional.
-- [ ] Maintainer has reviewed every commit in the new public history.
-- [ ] `python scripts/preflight_public.py .` passes immediately before push.
-- [ ] `python scripts/validate_repo.py .` passes immediately before push.
+- [x] Maintainer has reviewed every commit in the public history.
+- [x] Maintainer Git author and committer metadata use the GitHub noreply identity.
+- [x] `python scripts/preflight_public.py .` passes on the current public history.
+- [x] `python scripts/validate_repo.py .` passes on the current tree.
 
 ## Usability
 
@@ -24,13 +25,15 @@
 - [x] Issue and pull request templates exist.
 - [x] Changelog, roadmap, release notes, and initial issues exist.
 - [x] CI runs publication checks.
-- [ ] GitHub repository owner, name, description, and topics are confirmed.
+- [x] GitHub repository owner and name are confirmed.
+- [ ] Repository description and topics are confirmed in GitHub settings.
 
 ## Release
 
-- [ ] Add the intended public remote.
-- [ ] Push only the clean repository.
-- [ ] Confirm the default branch and branch protection.
+- [x] Add the intended public remote.
+- [x] Push only the clean repository.
+- [x] Confirm `main` as the default branch.
+- [ ] Decide whether branch protection is appropriate for the initial release.
 - [ ] Tag `v0.1.0` after CI passes.
 - [ ] Publish the GitHub Release using `RELEASE_NOTES_v0.1.0.md`.
 - [ ] Create selected issues from `docs/initial-issues.md`.

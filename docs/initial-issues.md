@@ -1,6 +1,6 @@
 # Initial GitHub Issues
 
-These issues describe genuine follow-up work after `v0.1.0`. Copy each section into a separate GitHub issue after the repository owner is chosen.
+These issues describe genuine follow-up work after `v0.1.0`. Copy a section into a separate GitHub issue only when the maintainer is ready to schedule that work.
 
 ## test: render templates and validate generated frontmatter
 

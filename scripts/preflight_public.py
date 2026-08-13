@@ -131,6 +131,9 @@ PATTERNS = [
 ]
 
 ALLOWED_EMAIL_DOMAINS = {"example.com", "example.invalid", "users.noreply.github.com"}
+MAINTAINER_EMAILS = {
+    "ElliotCui1017": "221169086+ElliotCui1017@users.noreply.github.com",
+}
 MAX_TEXT_BYTES = 2 * 1024 * 1024
 IGNORED_LINE_MARKER = "PUBLIC_PREFLIGHT_PATTERN_DEFINITION"
 
@@ -281,6 +284,45 @@ def scan_history(root: Path) -> list[tuple[str, int, str]]:
     return findings
 
 
+def scan_commit_metadata(root: Path) -> list[tuple[str, int, str]]:
+    """Require known maintainer identities to use their configured public email."""
+    if not (root / ".git").exists():
+        return []
+
+    findings: list[tuple[str, int, str]] = []
+    try:
+        output = run_git(
+            root,
+            "log",
+            "--all",
+            "--format=%H%x00%an%x00%ae%x00%cn%x00%ce",
+        ).decode("utf-8")
+        for record in output.splitlines():
+            fields = record.split("\0")
+            if len(fields) != 5:
+                findings.append((".git", 0, "could not parse commit identity metadata"))
+                continue
+            commit, author_name, author_email, committer_name, committer_email = fields
+            identities = (
+                ("author", author_name, author_email),
+                ("committer", committer_name, committer_email),
+            )
+            for role, name, email in identities:
+                expected = MAINTAINER_EMAILS.get(name)
+                if expected is not None and email.casefold() != expected.casefold():
+                    findings.append(
+                        (
+                            f"history:{commit}",
+                            0,
+                            f"maintainer {role} email does not match the public identity",
+                        )
+                    )
+    except (OSError, subprocess.CalledProcessError, UnicodeError):
+        findings.append((".git", 0, "could not complete commit metadata scan"))
+
+    return findings
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Preflight a repository tree and its Git history before publication."
@@ -293,7 +335,7 @@ def main() -> int:
         print(f"Public preflight failed: not a directory: {root}", file=sys.stderr)
         return 2
 
-    findings = scan_worktree(root) + scan_history(root)
+    findings = scan_worktree(root) + scan_history(root) + scan_commit_metadata(root)
     unique_findings = sorted(set(findings))
 
     if unique_findings:

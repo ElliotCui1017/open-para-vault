@@ -86,7 +86,7 @@ The public tree is built from an allowlist and has a new Git history. The mainta
 
 ## Project status
 
-The tree is prepared for the `v0.1.0` preview. A public remote, final owner review, release tag, and GitHub Release are intentionally outside this migration. See [release notes](RELEASE_NOTES_v0.1.0.md) and [roadmap](ROADMAP.md).
+The public repository and CI are established, and the tree is prepared for the `v0.1.0` preview. The release tag and GitHub Release remain pending explicit maintainer approval. See [release notes](RELEASE_NOTES_v0.1.0.md) and [roadmap](ROADMAP.md).
 
 ## Contributing and security
 

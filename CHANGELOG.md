@@ -26,4 +26,5 @@ All notable changes are documented here. The format follows Keep a Changelog, an
 ### Security
 
 - excluded the maintainer's private vault, source history, plugin bundles, credentials, local state, and machine-specific paths;
-- added deny-by-default validation for common credential, identifier, user-path, and private-artifact patterns.
+- added deny-by-default validation for common credential, identifier, user-path, and private-artifact patterns;
+- required the maintainer's Git author and committer metadata to use a public noreply identity.

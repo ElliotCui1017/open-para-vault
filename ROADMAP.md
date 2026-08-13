@@ -7,8 +7,9 @@
 - [x] provide portable templates and a fictional demo vault;
 - [x] provide generic Dataview and QuickAdd examples;
 - [x] add local preflight, structural validation, and CI;
-- [ ] complete maintainer review of the new history;
-- [ ] choose the GitHub owner/repository, push, tag, and publish release notes.
+- [x] complete maintainer review of the public history;
+- [x] establish and validate the public GitHub repository;
+- [ ] tag `v0.1.0` and publish the GitHub Release after explicit maintainer approval.
 
 ## v0.2.0: compatibility and onboarding
 
