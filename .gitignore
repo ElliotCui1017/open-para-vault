@@ -1,0 +1,77 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.mobileprovision
+credentials.*
+secrets.*
+token.*
+tokens.*
+auth.*
+cookies.*
+
+# Private vault/content areas
+/00_Inbox/
+/01_Daily/
+/02_Projects/
+/03_Areas/
+/04_Resources/
+/05_Wiki/
+/06_Archive/
+/99_Templates/
+private/
+_private/
+personal/
+journal/
+journals/
+diary/
+inbox-private/
+attachments/
+attachments-private/
+exports-private/
+backups/
+backup/
+*.kdbx
+*.ovpn
+*.sqlite
+*.sqlite3
+
+# OS and editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# Obsidian local state and caches
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+.obsidian/plugins/*/data.json
+.obsidian/plugins/*/main.js
+.obsidian/plugins/*/styles.css
+.trash/
+
+# Temporary and generated files
+*.tmp
+*.temp
+*.bak
+*.log
+dist/
+build/
+coverage/
