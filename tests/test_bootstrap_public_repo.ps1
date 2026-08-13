@@ -14,6 +14,7 @@ $bootstrap = Join-Path $source "scripts/bootstrap_public_repo.ps1"
 $python = @(Get-Command python -CommandType Application -ErrorAction Stop)[0]
 $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("open-para-bootstrap-" + [guid]::NewGuid())
 $insideSource = Join-Path $source (".bootstrap-test-" + [guid]::NewGuid())
+$caseVariantInsideSource = $null
 
 function Assert-True {
     param(
@@ -63,6 +64,27 @@ function Invoke-BootstrapFailure {
 
     Assert-True ($failureMessage.Contains($ExpectedMessage)) `
         "Bootstrap failed for the wrong reason. Expected '$ExpectedMessage', got '$failureMessage'."
+}
+
+function Get-CaseVariant {
+    param(
+        [string]$Path
+    )
+
+    $characters = $Path.ToCharArray()
+    for ($index = 0; $index -lt $characters.Length; $index++) {
+        $character = $characters[$index]
+        if ($character -cge 'A' -and $character -cle 'Z') {
+            $characters[$index] = [char]::ToLowerInvariant($character)
+            return -join $characters
+        }
+        if ($character -cge 'a' -and $character -cle 'z') {
+            $characters[$index] = [char]::ToUpperInvariant($character)
+            return -join $characters
+        }
+    }
+
+    throw "Source path does not contain an ASCII letter for a deterministic case-variant test."
 }
 
 $sourceStatusBefore = @(Invoke-NativeChecked "git" @("-C", $source, "status", "--porcelain=v1", "--untracked-files=all") "Source status check")
@@ -127,12 +149,31 @@ try {
     Assert-True (-not (Test-Path -LiteralPath $insideSource)) `
         "Bootstrap created a scaffold inside the source repository."
 
+    Write-Host "Testing rejection of the source repository itself as destination..."
+    Invoke-BootstrapFailure $source "Destination must be outside the source repository"
+
+    if ([System.IO.Path]::DirectorySeparatorChar -eq "\") {
+        Write-Host "Testing case-insensitive source boundary on Windows..."
+        $caseVariantSource = Get-CaseVariant $source
+        Assert-True (-not [string]::Equals($caseVariantSource, $source, [System.StringComparison]::Ordinal)) `
+            "Case-variant source path did not change ordinal casing."
+        Assert-True ([string]::Equals($caseVariantSource, $source, [System.StringComparison]::OrdinalIgnoreCase)) `
+            "Case-variant source path does not identify the same Windows path."
+        $caseVariantInsideSource = Join-Path $caseVariantSource (".bootstrap-test-case-" + [guid]::NewGuid())
+        Invoke-BootstrapFailure $caseVariantInsideSource "Destination must be outside the source repository"
+        Assert-True (-not (Test-Path -LiteralPath $caseVariantInsideSource)) `
+            "Bootstrap created a scaffold through a case-variant source path."
+    }
+
     $sourceStatusAfter = @(Invoke-NativeChecked "git" @("-C", $source, "status", "--porcelain=v1", "--untracked-files=all") "Source status check")
     Assert-True (($sourceStatusBefore -join "`n") -ceq ($sourceStatusAfter -join "`n")) `
         "Bootstrap tests changed the source repository working tree."
 
     Write-Host "Bootstrap behavior tests passed."
 } finally {
+    if ($null -ne $caseVariantInsideSource -and (Test-Path -LiteralPath $caseVariantInsideSource)) {
+        Remove-Item -LiteralPath $caseVariantInsideSource -Recurse -Force
+    }
     if (Test-Path -LiteralPath $insideSource) {
         Remove-Item -LiteralPath $insideSource -Recurse -Force
     }

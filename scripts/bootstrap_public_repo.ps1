@@ -13,8 +13,17 @@ if ([string]::IsNullOrWhiteSpace($SourceRoot)) {
 
 $source = [System.IO.Path]::GetFullPath($SourceRoot)
 $destinationPath = [System.IO.Path]::GetFullPath($Destination)
+$pathComparison = if ([System.IO.Path]::DirectorySeparatorChar -eq "\") {
+    [System.StringComparison]::OrdinalIgnoreCase
+} else {
+    [System.StringComparison]::Ordinal
+}
+$sourceDescendantPrefix = $source + [System.IO.Path]::DirectorySeparatorChar
 
-if ($destinationPath.StartsWith($source + [System.IO.Path]::DirectorySeparatorChar)) {
+if (
+    $destinationPath.Equals($source, $pathComparison) -or
+    $destinationPath.StartsWith($sourceDescendantPrefix, $pathComparison)
+) {
     throw "Destination must be outside the source repository: $destinationPath"
 }
 
