@@ -19,7 +19,7 @@ if ($destinationPath.StartsWith($source + [System.IO.Path]::DirectorySeparatorCh
 }
 
 if (Test-Path -LiteralPath $destinationPath) {
-    $existing = Get-ChildItem -LiteralPath $destinationPath -Force
+    $existing = @(Get-ChildItem -LiteralPath $destinationPath -Force)
     if ($existing.Count -gt 0) {
         throw "Destination is not empty: $destinationPath"
     }
@@ -36,6 +36,7 @@ $allowlist = @(
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "LICENSE",
+    "MIGRATION_AUDIT.md",
     "README.md",
     "RELEASE_NOTES_v0.1.0.md",
     "ROADMAP.md",
@@ -45,8 +46,55 @@ $allowlist = @(
     "docs",
     "examples",
     "scripts",
+    "tests",
     "templates"
 )
+
+$excludedDirectoryNames = @(
+    ".git",
+    ".ipynb_checkpoints",
+    ".trash",
+    ".venv",
+    "__pycache__",
+    "build",
+    "cache",
+    "coverage",
+    "dist",
+    "node_modules",
+    "venv"
+)
+
+$excludedFileExtensions = @(
+    ".bak",
+    ".log",
+    ".pyc",
+    ".pyo",
+    ".temp",
+    ".tmp"
+)
+
+function Copy-PublicDirectory {
+    param(
+        [string]$SourceDirectory,
+        [string]$TargetDirectory
+    )
+
+    New-Item -ItemType Directory -Path $TargetDirectory -Force | Out-Null
+    foreach ($child in @(Get-ChildItem -LiteralPath $SourceDirectory -Force)) {
+        if ($child.PSIsContainer) {
+            if ($excludedDirectoryNames -contains $child.Name) {
+                continue
+            }
+            Copy-PublicDirectory $child.FullName (Join-Path $TargetDirectory $child.Name)
+            continue
+        }
+
+        if ($excludedFileExtensions -contains $child.Extension.ToLowerInvariant()) {
+            continue
+        }
+        Copy-Item -LiteralPath $child.FullName -Destination $TargetDirectory -Force
+    }
+}
 
 foreach ($relativePath in $allowlist) {
     $item = Join-Path $source $relativePath
@@ -54,10 +102,7 @@ foreach ($relativePath in $allowlist) {
         $target = Join-Path $destinationPath $relativePath
         $sourceItem = Get-Item -LiteralPath $item -Force
         if ($sourceItem.PSIsContainer) {
-            New-Item -ItemType Directory -Path $target -Force | Out-Null
-            Get-ChildItem -LiteralPath $item -Force | ForEach-Object {
-                Copy-Item -LiteralPath $_.FullName -Destination $target -Recurse -Force
-            }
+            Copy-PublicDirectory $item $target
         } else {
             Copy-Item -LiteralPath $item -Destination $target -Force
         }
