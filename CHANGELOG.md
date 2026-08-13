@@ -4,6 +4,11 @@ All notable changes are documented here. The format follows Keep a Changelog, an
 
 ## [Unreleased]
 
+### Added
+
+- deterministic rendering and generated-frontmatter validation for every reusable template;
+- Windows, macOS, and Linux CI coverage for rendered-template validation.
+
 ### Planned
 
 - compatibility feedback from the first public preview;

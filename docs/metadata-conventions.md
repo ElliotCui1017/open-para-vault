@@ -77,6 +77,24 @@ updated: "{{date:YYYY-MM-DD}}"
 
 QuickAdd captures use QuickAdd placeholders such as `{{DATE:YYYY-MM-DD HH:mm}}` and `{{VALUE}}`.
 
+## Template validation
+
+The deterministic validator supports only the core placeholders currently used in `templates/`:
+
+- `{{title}}`;
+- `{{date:YYYY-MM-DD}}`;
+- `{{date:YYYY-MM}}`;
+- `{{time:HH:mm}}`.
+
+It renders fixed fixture values, validates the generated frontmatter, and rejects unresolved placeholders. It is deliberately not a complete Templater engine.
+
+Run it with:
+
+```bash
+python scripts/validate_templates.py .
+python -m unittest discover -s tests -v
+```
+
 ## Compatibility rules
 
 - Keep frontmatter at the start of the file.
