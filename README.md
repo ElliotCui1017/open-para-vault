@@ -47,6 +47,7 @@ Never copy your private vault into this repository to "try the system."
 |-- docs/                    architecture, setup, privacy, conventions
 |-- examples/demo-vault/     fictional self-contained Obsidian vault
 |-- scripts/                 bootstrap and validation
+|-- tests/                   standard-library validation tests
 |-- templates/               portable note templates
 |-- MIGRATION_AUDIT.md       source migration risk record
 `-- RELEASE_NOTES_v0.1.0.md  first-release notes
@@ -76,6 +77,8 @@ From the repository root:
 ```bash
 python scripts/preflight_public.py .
 python scripts/validate_repo.py .
+python scripts/validate_templates.py .
+python -m unittest discover -s tests -v
 ```
 
 The checks reduce risk; they do not replace human review of the full Git history.

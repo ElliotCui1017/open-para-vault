@@ -9,6 +9,8 @@ import re
 import sys
 from pathlib import Path
 
+from validate_templates import validate_templates
+
 
 REQUIRED_FILES = {
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -37,7 +39,9 @@ REQUIRED_FILES = {
     "docs/setup.md",
     "docs/workflow.md",
     "scripts/preflight_public.py",
+    "scripts/validate_templates.py",
     "scripts/validate_repo.py",
+    "tests/test_validate_templates.py",
 }
 
 DEMO_FOLDERS = {
@@ -52,7 +56,6 @@ DEMO_FOLDERS = {
     "99_Templates",
 }
 
-REQUIRED_TEMPLATE_KEYS = {"type", "status", "created", "updated", "aliases", "tags"}
 MARKDOWN_LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 WIKILINK = re.compile(r"!?(?:\[\[)([^\]|#]+)(?:#[^\]|]+)?(?:\|[^\]]+)?\]\]")
 
@@ -153,11 +156,11 @@ def main() -> int:
     templates = sorted(template_root.glob("*.md"))
     if not templates:
         errors.append("No reusable templates found")
+    template_errors, rendered_template_count = validate_templates(root)
+    errors.extend(template_errors)
+    if rendered_template_count != len(templates):
+        errors.append("Rendered template validator did not cover every reusable template")
     for template in templates:
-        keys = frontmatter_keys(template)
-        missing = sorted(REQUIRED_TEMPLATE_KEYS - keys)
-        if missing:
-            errors.append(f"Template missing frontmatter keys: {template.relative_to(root)} ({', '.join(missing)})")
         mirror = demo_templates / template.name
         if not mirror.is_file():
             errors.append(f"Demo template mirror missing: {mirror.relative_to(root)}")
@@ -210,7 +213,7 @@ def main() -> int:
         return 1
 
     print(
-        f"Repository validation passed: {len(templates)} templates, "
+        f"Repository validation passed: {len(templates)} rendered templates, "
         f"{len(list(demo.rglob('*.md')))} demo Markdown files, and all required files are valid."
     )
     return 0
