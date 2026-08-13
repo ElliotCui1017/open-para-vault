@@ -1,0 +1,55 @@
+{
+  "choices": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "name": "Quick capture",
+      "type": "Capture",
+      "command": true,
+      "appendLink": false,
+      "captureTo": "00_Inbox/Capture Queue.md",
+      "captureToActiveFile": false,
+      "activeFileWritePosition": "cursor",
+      "createFileIfItDoesntExist": {
+        "enabled": true,
+        "createWithTemplate": false,
+        "template": ""
+      },
+      "format": {
+        "enabled": true,
+        "format": "## {{DATE:YYYY-MM-DD HH:mm}} Quick capture\n\ntype:: quick-capture\nstatus:: inbox\n\n{{VALUE}}\n"
+      },
+      "prepend": false,
+      "task": false,
+      "openFile": false
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "name": "Project update",
+      "type": "Capture",
+      "command": true,
+      "appendLink": false,
+      "captureTo": "00_Inbox/Capture Queue.md",
+      "captureToActiveFile": false,
+      "activeFileWritePosition": "cursor",
+      "createFileIfItDoesntExist": {
+        "enabled": true,
+        "createWithTemplate": false,
+        "template": ""
+      },
+      "format": {
+        "enabled": true,
+        "format": "## {{DATE:YYYY-MM-DD HH:mm}} Project update\n\ntype:: project-update\nstatus:: inbox\nproject::\n\n{{VALUE}}\n"
+      },
+      "prepend": false,
+      "task": false,
+      "openFile": false
+    }
+  ],
+  "inputPrompt": "single-line",
+  "persistInputPromptDrafts": false,
+  "useSelectionAsCaptureValue": true,
+  "templateFolderPath": "99_Templates",
+  "disableOnlineFeatures": true,
+  "enableRibbonIcon": false,
+  "showCaptureNotification": true
+}
