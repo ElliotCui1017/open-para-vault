@@ -34,6 +34,10 @@
 - [x] Push only the clean repository.
 - [x] Confirm `main` as the default branch.
 - [ ] Decide whether branch protection is appropriate for the initial release.
-- [ ] Tag `v0.1.0` after CI passes.
-- [ ] Publish the GitHub Release using `RELEASE_NOTES_v0.1.0.md`.
+- [x] Tag and publish the frozen `v0.1.0` release.
+- [ ] Confirm the target release-notes file exists before creating a new version tag.
+- [ ] Confirm the deterministic starter ZIP and checksum reproduce locally.
+- [ ] Create the version tag only after CI and maintainer review.
+- [ ] Review the workflow-created Draft Release and its matching-tag assets.
+- [ ] Publish the GitHub Release manually after verifying its notes and checksum.
 - [ ] Create selected issues from `docs/initial-issues.md`.
